@@ -6,25 +6,31 @@ angular.module('smartMirror', ['ngRoute'])
       })
   }])
 
-  .directive('smTimeWidget', function(){
+  .directive('smTimeWidget', ['$interval', function($interval){
     return {
       restrict: 'E',
       scope: {},
       templateUrl: 'app/src/widgets/_timeWidget.html',
       link: function(scope, ele, attr){
-      	scope.moment = moment;
+
+      	// 1 sec refresh rate
+      	$interval(function(){
+      		scope.date = _refreshTime();
+      	}, 1000);
 
       	scope.date = moment().format('LTS');
 
-      	function refreshTime(){
-        	scope.date = moment().format('LTS');
-      	}
-
       	scope.$watch('date', function(newVal, oldVal){
-      		console.log('new:', newVal, 'oldVal:', oldVal);
-      		refreshTime();
+      		if (newVal){
+      			_refreshTime();
+      		}
       	})
 
       }
+
     }
-  })
+
+	  function _refreshTime(){
+	  	return moment().format('LTS');
+	  }
+  }])
