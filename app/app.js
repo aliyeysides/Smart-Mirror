@@ -13,24 +13,18 @@ angular.module('smartMirror', ['ngRoute'])
       templateUrl: 'app/src/widgets/_timeWidget.html',
       link: function(scope, ele, attr){
 
+      	scope.date = _returnCurrentTime();
+
       	// 1 sec refresh rate
       	$interval(function(){
-      		scope.date = _refreshTime();
+      		scope.date = _returnCurrentTime();
       	}, 1000);
-
-      	scope.date = moment().format('LTS');
-
-      	scope.$watch('date', function(newVal, oldVal){
-      		if (newVal){
-      			_refreshTime();
-      		}
-      	})
 
       }
 
     }
 
-	  function _refreshTime(){
-	  	return moment().format('LTS');
+	  function _returnCurrentTime(){
+	  	return moment().format('MMMM Do YYYY, h:mm a');
 	  }
   }])
